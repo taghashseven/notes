@@ -2,12 +2,13 @@ import { useState , useEffect } from "react";
 import Edit from "./Editor";
 import { javascript } from '@codemirror/lang-javascript';
 import {html} from '@codemirror/lang-html'
+import {css} from '@codemirror/lang-css'
 import {ViewColumnsIcon} from '@heroicons/react/24/solid'
 
 const Ide = (props)=>{
     
     const [java , setJava] = useState("console.log('hello world!');");
-    const [css , setCss] = useState("h1 { color: red; }");
+    const [cssVal , setCss] = useState("h1 { color: red; }");
     const [htmlval , setHtml] = useState("<h1>hello world!</h1>");
     const [doc , setDoc] = useState("")    
 
@@ -22,7 +23,7 @@ const Ide = (props)=>{
             setDoc(`
             <html>
                 <head>
-                    <style>${css}</style>
+                    <style>${cssVal}</style>
                 </head>
                 <body>
                     ${htmlval}
@@ -33,7 +34,7 @@ const Ide = (props)=>{
         },250)
         return ()=>clearTimeout(timeout)
 
-    },[java , css , htmlval])
+    },[java , cssVal , htmlval])
 
     return (
     <div className="w-screen h-screen flex flex-col ">
@@ -55,10 +56,10 @@ const Ide = (props)=>{
             </div>
 
             {activeTab === 0 && 
-                <Edit value={java} onChange={setJava} lang={[javascript({ jsx: true })]} title='JavaScript ' />
+                <Edit value={java} onChange={setJava} extension={[javascript({ jsx: true })]} title='JavaScript ' />
             }
             {activeTab === 1 && 
-                <Edit value={css} onChange={setCss}  title="css"/>
+                <Edit value={cssVal} onChange={setCss} extension={[css()]}  title="css"/>
             }
             {activeTab === 2 && 
                 <Edit value={htmlval} onChange={setHtml} extension={[html()]} title="html" />
